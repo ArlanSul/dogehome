@@ -36,6 +36,7 @@ def base():
         intro = request.form["intro"]
         Inn = request.form["Inn"]
 
+
         article = Home(title=title, intro=intro, Inn=Inn)
         db.session.add(article)
         db.session.commit()
