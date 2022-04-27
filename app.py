@@ -11,7 +11,9 @@ class Home(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     intro = db.Column(db.String(300), nullable=False)
+    contact = db.Column(db.String(300), nullable=False)
     Inn = db.Column(db.String(300), nullable=False)
+    information = db.Column(db.Text(), nullable=False)
 
     def __repr__(self):
         return "<Home %r>" % self.id
@@ -29,18 +31,25 @@ def shelters():
     return render_template("shelters.html", art=art)
 
 
+@app.route("/shelters/<int:id>")
+def shelters_num(id):
+    num_shelters = Home.query.get(id)
+    return render_template("shelters_num.html", num_shelters=num_shelters)
+
+
 @app.route('/base', methods=["POST", "GET"])
 def base():
     if request.method == "POST":
         title = request.form["title"]
         intro = request.form["intro"]
+        contact = request.form["contact"]
         Inn = request.form["Inn"]
+        information = request.form["information"]
 
-
-        article = Home(title=title, intro=intro, Inn=Inn)
+        article = Home(title=title, intro=intro, contact=contact, Inn=Inn, information=information)
         db.session.add(article)
         db.session.commit()
-        return redirect("/")
+        return redirect("/shelters")
 
     else:
         return render_template("base.html")
